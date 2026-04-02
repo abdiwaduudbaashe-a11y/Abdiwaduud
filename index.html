@@ -3,61 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abdiwaduud | Elite Trading Dashboard v3</title>
+    <title>Abdiwaduud | Ultimate Trading Dashboard</title>
     <style>
-        :root { --bg: #0d1117; --card: #161b22; --primary: #58a6ff; --success: #238636; --border: #30363d; --text: #c9d1d9; --accent: #f0e05a; }
-        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; margin: 0; display: flex; }
+        :root { --bg: #0d1117; --card: #161b22; --primary: #58a6ff; --success: #238636; --border: #30363d; --text: #c9d1d9; }
+        .light-mode { --bg: #f0f2f5; --card: #ffffff; --primary: #0969da; --success: #1a7f37; --border: #d0d7de; --text: #1f2328; }
+        
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; transition: 0.3s; }
         
         /* Sidebar */
-        .sidebar { width: 220px; height: 100vh; background: var(--card); border-right: 1px solid var(--border); padding: 25px 15px; position: fixed; }
-        .sidebar h2 { color: var(--primary); font-size: 1.3rem; text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .sidebar a { display: block; color: #8b949e; text-decoration: none; padding: 12px; border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; }
-        .sidebar a:hover { background: #21262d; color: white; }
+        .sidebar { width: 230px; height: 100vh; background: var(--card); border-right: 1px solid var(--border); padding: 20px; position: fixed; overflow-y: auto; }
+        .sidebar h2 { color: var(--primary); font-size: 1.2rem; text-align: center; margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .sidebar a { display: block; color: var(--text); text-decoration: none; padding: 12px; border-radius: 8px; margin-bottom: 5px; transition: 0.2s; font-size: 0.9rem; }
+        .sidebar a:hover { background: var(--primary); color: white; }
 
-        .main { margin-left: 250px; padding: 30px; width: 100%; max-width: 1200px; }
-        .header-box { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .session-badge { background: var(--success); padding: 8px 20px; border-radius: 30px; font-weight: bold; font-size: 0.85rem; }
+        .main { margin-left: 270px; padding: 30px; width: calc(100% - 270px); }
+        
+        /* Header & Sessions */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .session-tag { padding: 10px 25px; border-radius: 50px; font-weight: bold; font-size: 0.9rem; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .theme-toggle { cursor: pointer; background: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; }
 
         /* Grid System */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
-        .card { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 12px; }
-        .card h3 { margin-top: 0; color: var(--primary); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-bottom: 25px; }
+        .card { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card h3 { margin-top: 0; color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 20px; }
 
-        /* Inputs & Tasks */
-        input[type="text"], textarea { width: 100%; background: #0d1117; border: 1px solid var(--border); color: white; padding: 10px; border-radius: 6px; outline: none; box-sizing: border-box; }
-        .task-item { display: flex; align-items: center; justify-content: space-between; background: #21262d; padding: 10px; border-radius: 6px; margin-top: 8px; border-left: 4px solid var(--primary); }
-        .delete-btn { color: #f85149; cursor: pointer; font-weight: bold; }
+        /* Risk Calculator */
+        .risk-input { margin-bottom: 15px; }
+        .risk-input label { display: block; font-size: 0.85rem; margin-bottom: 5px; }
+        input[type="number"], input[type="text"] { width: 100%; padding: 10px; background: rgba(0,0,0,0.1); border: 1px solid var(--border); color: var(--text); border-radius: 6px; }
+        .result-box { background: var(--primary); color: white; padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; }
 
-        /* Calculator */
-        .calc-wrapper { background: #000; padding: 15px; border-radius: 10px; width: 240px; margin: auto; }
-        #display { width: 90%; height: 35px; background: #161b22; color: var(--accent); border: 1px solid var(--border); text-align: right; margin-bottom: 10px; padding: 5px; }
-        .btns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
-        .btns button { padding: 10px; background: #21262d; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        /* Routine Table */
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        td { padding: 10px; border-bottom: 1px solid var(--border); }
+        .time { font-weight: bold; color: var(--primary); width: 100px; }
 
-        /* Table */
-        table { width: 100%; border-collapse: collapse; }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        
-        /* Image Preview */
-        #imgPreview { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 15px; }
-        .preview-img { width: 100%; border-radius: 5px; border: 1px solid var(--border); }
+        /* Image Gallery */
+        .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .gallery img { width: 100%; height: 80px; object-fit: cover; border-radius: 5px; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
 <nav class="sidebar">
     <h2>ABDIWADUUD</h2>
-    <a href="https://www.tradingview.com" target="_blank">📉 TradingView</a>
-    <a href="https://www.notion.so" target="_blank">📝 Notion</a>
-    <a href="https://www.forexfactory.com" target="_blank">📅 News Calendar</a>
-    <a href="#tasks">✅ Daily Tasks</a>
-    <a href="#assets">🏆 Certificates</a>
+    <a href="https://www.tradingview.com" target="_blank">📉 Live TradingView</a>
+    <a href="https://www.notion.so" target="_blank">📝 Notion Notes</a>
+    <a href="https://www.forexfactory.com" target="_blank">📅 Economic Calendar</a>
+    <a href="#risk">🧮 Risk Calculator</a>
+    <a href="#routine">📅 My Daily Routine</a>
+    <a href="#assets">🏆 Certificates & Payouts</a>
 </nav>
 
 <div class="main">
-    <div class="header-box">
-        <div id="session-tag" class="session-badge">MARKET STATUS...</div>
-        <div id="clock" style="font-weight: bold; font-size: 1.2rem; color: var(--primary);">00:00:00</div>
+    <div class="header">
+        <div id="session-tag" class="session-tag">LOADING SESSION...</div>
+        <div>
+            <span id="live-clock" style="font-size: 1.2rem; font-weight: bold; margin-right: 20px;">00:00:00</span>
+            <button class="theme-toggle" onclick="toggleTheme()">🌓 Dark/Light</button>
+        </div>
     </div>
 TradingView
 TradingView — Track All Markets
@@ -65,84 +70,92 @@ TradingView — Track All Markets
 Where the world charts, chats, and trades markets. We're a supercharged super-charting platform and social network for traders and investors. Free to sign up.
 
 <div class="grid">
-        <div class="card" id="tasks">
-            <h3>✅ Daily Tasks</h3>
-            <div style="display:flex; gap:10px;">
-                <input type="text" id="taskInput" placeholder="Maxaa kuu qorshaysan maanta?">
-                <button onclick="addTask()" style="background:var(--primary); color:white; border:none; padding:0 15px; border-radius:6px; cursor:pointer;">ADD</button>
+        <div class="card" id="risk">
+            <h3>🧮 Risk & Lot Manager</h3>
+            <div class="risk-input">
+                <label>Account Balance ($)</label>
+                <input type="number" id="balance" value="5000" oninput="calcLot()">
             </div>
-            <div id="taskList"></div>
+            <div class="risk-input">
+                <label>Risk Percentage (%)</label>
+                <input type="number" id="riskPerc" value="1" oninput="calcLot()">
+            </div>
+            <div class="risk-input">
+                <label>Stop Loss (Pips)</label>
+                <input type="number" id="slPips" value="20" oninput="calcLot()">
+            </div>
+            <div class="result-box">
+                <strong>Recommended Lot Size:</strong>
+                <div id="lotResult" style="font-size: 1.5rem; margin-top:5px;">0.25</div>
+            </div>
         </div>
 
         <div class="card">
-            <h3>🧮 Pro Calculator</h3>
-            <div class="calc-wrapper">
-                <input type="text" id="display" disabled>
-                <div class="btns">
-                    <button onclick="val('7')">7</button><button onclick="val('8')">8</button><button onclick="val('9')">9</button><button onclick="val('/')">/</button>
-                    <button onclick="val('4')">4</button><button onclick="val('5')">5</button><button onclick="val('6')">6</button><button onclick="val('*')">*</button>
-                    <button onclick="val('1')">1</button><button onclick="val('2')">2</button><button onclick="val('3')">3</button><button onclick="val('-')">-</button>
-                    <button onclick="val('0')">0</button><button onclick="solve()" style="background:var(--success);">=</button><button onclick="reset()" style="background:#ea4335;">C</button><button onclick="val('+')">+</button>
-                </div>
+            <h3>🧠 Trade Psychology</h3>
+            <div id="psychList">
+                <div style="margin-bottom:10px;"><input type="checkbox"> Ma raacday qorshahaaga?</div>
+                <div style="margin-bottom:10px;"><input type="checkbox"> Suuqyada ma buuxiyeen Setup?</div>
+                <div style="margin-bottom:10px;"><input type="checkbox"> Stop Loss ma u goysay?</div>
             </div>
+            <button onclick="addPsych()" style="width:100%; background:var(--success); color:white; border:none; padding:10px; border-radius:6px; cursor:pointer; margin-top:10px;">ADD NEW CHECK</button>
         </div>
     </div>
 
     <div class="grid">
-        <div class="card">
-            <h3>📓 Private Journal</h3>
-            <textarea id="journalArea" rows="8" placeholder="Qor wixii maanta kuu qorshaysan ama aad baratay..." oninput="saveJournal()"></textarea>
-            <p style="font-size:0.7rem; color:#8b949e; margin-top:5px;">Iskeed ayay u kaydsamaysaa.</p>
-        </div>
-
-        <div class="card">
-            <h3>📺 Video Learning</h3>
-            <iframe width="100%" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen style="border-radius:8px;"></iframe>
-        </div>
-    </div>
-
-    <div class="grid">
-        <div class="card">
-            <h3>📅 Daily Routine</h3>
+        <div class="card" id="routine">
+            <h3>📅 My Disciplined Routine</h3>
             <table>
-                <tr><td>05:00 - 07:00</td><td>Salaad, Quraan & Exercise</td></tr>
-                <tr><td>Morning</td><td>English & AI Study</td></tr>
-                <tr><td>Trading</td><td>Market Analysis</td></tr>
-                <tr><td>Night</td><td>Xisaabtan & Sleep</td></tr>
+                <tr><td class="time">05:00</td><td>Subax kac, Salaad, Quraan (5-10 pgs)</td></tr>
+                <tr><td class="time">06:00</td><td>1 Glass Water, Exercise & Journaling</td></tr>
+                <tr><td class="time">07:00</td><td>English & AI Engineering Study</td></tr>
+                <tr><td class="time">Trading</td><td>Market Analysis & Trading Session</td></tr>
+                <tr><td class="time">19:00</td><td>Accounting (Xisaabtan) & Review</td></tr>
+                <tr><td class="time">23:00</td><td>Sleep (Habayn wacan)</td></tr>
             </table>
         </div>
 
-        <div class="card" id="assets">
-            <h3>📁 Asset Manager (Certificates)</h3>
-            <input type="file" id="file-input" multiple accept="image/*" style="font-size:0.8rem;">
-            <div id="imgPreview"></div>
+        <div class="card">
+            <h3>📺 Learning Hub</h3>
+            <iframe width="100%" height="180" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen style="border-radius:10px;"></iframe>
+            <div id="assets" style="margin-top:20px;">
+                <h4 style="margin:0 0 10px 0;">🏆 My Certificates</h4>
+                <input type="file" id="imgInput" multiple accept="image/*" onchange="previewImages()">
+                <div id="gallery" class="gallery"></div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // TASKS & JOURNAL LOGIC
-    function addTask() {
-        let input = document.getElementById('taskInput');
-        if (input.value === '') return;
-        let list = document.getElementById('taskList');
-        let div = document.createElement('div');
-        div.className = 'task-item';
-        div.innerHTML = <span>${input.value}</span> <span class="delete-btn" onclick="this.parentElement.remove(); saveTasks();">X</span>;
-        list.appendChild(div);
-        input.value = '';
-        saveTasks();
+    // Theme Toggle
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
     }
-    function saveTasks() { localStorage.setItem('abdiTasks', document.getElementById('taskList').innerHTML); }
-    function saveJournal() { localStorage.setItem('abdiJournal', document.getElementById('journalArea').value); }
 
-    // CALC LOGIC
-    let d = document.getElementById('display');
-    function val(v) { d.value += v; }
-    function reset() { d.value = ''; }
-    function solve() { try { d.value = eval(d.value); } catch { d.value = 'Error'; } }
+    // Risk Calculator Logic
+    function calcLot() {
+        let bal = document.getElementById('balance').value;
+        let risk = document.getElementById('riskPerc').value;
+        let sl = document.getElementById('slPips').value;
+        if(bal && risk && sl && sl > 0) {
+            let riskAmt = bal * (risk / 100);
+            let lot = riskAmt / (sl * 10); // Standard for EURUSD/Common pairs
+            document.getElementById('lotResult').innerText = lot.toFixed(2);
+        }
+    }
 
-    // CLOCKS & SESSIONS
+    // Sessions & Clock Logic
+    function updateDashboard() {
+        const now = new Date();
+        document.getElementById('live-clock').innerText = now.toLocaleTimeString();
+        
+        const hr = now.getUTCHours() + 3; // Adjustment for East Africa Time
+        let session = "Market is Quiet 😴";
+        let color = "#8b949e";
+
+        if(hr >= 0 && hr < 8) { session = "🌏 ASIA SESSION ACTIVE"; color = "#f0e05a"; }
+        else if(hr >= 8 && hr < 16) { session = "🟢 LONDON SESSION ACTIVE"; color = "#238636"; }
+        else if(hr >= 13 && hr < 21) { session = "🔵 NEW YORK SESSION ACTIVE"; color = "#58a6ff"; }
 YouTube
 Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)
 
@@ -151,37 +164,36 @@ The official video for “Never Gonna Give You Up” by Rick Astley.
 Never: The Autobiography 📚 OUT NOW!
 Follow this link to get your copy and listen to Rick’s ‘Never’ pl...
 
-function updateDashboard() {
-        const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString();
-        const hr = now.getUTCHours() + 1; 
-        let session = "Market is Quiet 😴";
-        let color = "#8b949e";
-        if(hr >= 8 && hr < 16) { session = "🟢 LONDON SESSION ACTIVE"; color = "#238636"; }
-        else if(hr >= 13 && hr < 21) { session = "🔵 NEW YORK SESSION ACTIVE"; color = "#58a6ff"; }
-        const badge = document.getElementById('session-tag');
-        badge.innerText = session; badge.style.background = color;
+const badge = document.getElementById('session-tag');
+        badge.innerText = session;
+        badge.style.background = color;
     }
     setInterval(updateDashboard, 1000);
 
-    // IMAGE UPLOAD
-    document.getElementById('file-input').addEventListener('change', function(e) {
-        const preview = document.getElementById('imgPreview');
-        Array.from(e.target.files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = f => {
-                const img = document.createElement('img');
-                img.src = f.target.result; img.className = 'preview-img';
-                preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
-    });
+    // Psychology Add
+    function addPsych() {
+        let q = prompt("Maxaad doonaysaa in lagu weydiiyo ka hor trade-ka?");
+        if(q) {
+            let div = document.createElement('div');
+            div.style.marginBottom = "10px";
+            div.innerHTML = <input type="checkbox"> ${q};
+            document.getElementById('psychList').appendChild(div);
+        }
+    }
 
-    window.onload = function() {
-        if(localStorage.getItem('abdiTasks')) document.getElementById('taskList').innerHTML = localStorage.getItem('abdiTasks');
-        if(localStorage.getItem('abdiJournal')) document.getElementById('journalArea').value = localStorage.getItem('abdiJournal');
-        updateDashboard();
+    // Image Preview
+    function previewImages() {
+        const preview = document.getElementById('gallery');
+        const files = document.getElementById('imgInput').files;
+        for (let file of files) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                preview.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        }
     }
 </script>
 </body>

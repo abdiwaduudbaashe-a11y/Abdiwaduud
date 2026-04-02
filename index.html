@@ -3,51 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abdiwaduud Mohamed | Trading & AI</title>
+    <title>Abdiwaduud Mohamed | Portfolio & AI</title>
     <style>
-        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Segoe UI', sans-serif; line-height: 1.6; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: auto; }
-        header { text-align: center; padding: 40px 0; border-bottom: 1px solid #30363d; }
-        h1 { color: #58a6ff; font-size: 2.5rem; margin: 0; }
-        .bio { color: #8b949e; font-size: 1.1rem; }
+        body { background: #0d1117; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 1000px; margin: auto; background: #161b22; padding: 30px; border-radius: 20px; border: 1px solid #30363d; }
         
-        /* Schedule Table */
-        .section { margin-top: 30px; background: #161b22; padding: 20px; border-radius: 12px; border: 1px solid #30363d; }
-        h2 { color: #f0e05a; border-bottom: 2px solid #f0e05a; display: inline-block; padding-bottom: 5px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #30363d; }
-        th { color: #58a6ff; }
+        /* Saacadda iyo Header-ka */
+        #clock { font-size: 3rem; color: #58a6ff; font-weight: bold; margin: 20px 0; }
+        .badge { background: #238636; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
 
-        /* AI Section Placeholder */
-        .ai-chat { background: #000; border: 1px solid #238636; border-radius: 10px; padding: 20px; margin-top: 30px; position: relative; }
-        .ai-chat::before { content: "🤖 Abdiwaduud AI System"; position: absolute; top: -10px; left: 20px; background: #238636; color: white; padding: 2px 10px; border-radius: 5px; font-size: 0.8rem; }
+        /* Trading Chart */
+        .chart-container { height: 450px; margin: 30px 0; border: 2px solid #30363d; border-radius: 10px; overflow: hidden; }
+
+        /* Jadwalka la bedeli karo */
+        .schedule-section { background: #0d1117; padding: 20px; border-radius: 15px; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #30363d; padding: 12px; text-align: left; }
+        td[contenteditable="true"] { background: #1c2128; border: 1px dashed #58a6ff; }
+
+        /* Social Buttons */
+        .social-btn { display: inline-block; padding: 12px 25px; margin: 10px; border-radius: 50px; text-decoration: none; font-weight: bold; }
+        .wa { background: #25d366; color: white; }
+        .email { background: #ea4335; color: white; }
+
+        /* AI Chat */
+        .ai-chat { background: #000; border: 1px solid #f0e05a; border-radius: 10px; padding: 20px; margin-top: 30px; text-align: left; }
+        #chat-output { height: 100px; overflow-y: auto; margin-bottom: 10px; }
+        input { width: 75%; padding: 10px; border-radius: 5px; border: none; }
+        button { padding: 10px 20px; background: #f0e05a; color: black; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Abdiwaduud Mohamed</h1>
-            <p class="bio">Forex Trader & AI Student | 5k Challenge Winner</p>
-        </header>
 
-        <div class="section">
-            <h2>📅 My Learning Schedule</h2>
+    <div class="container">
+        <span class="badge">Verified 5k Challenge Winner 🏆</span>
+        <h1>Abdiwaduud Mohamed</h1>
+        <div id="clock">00:00:00</div>
+
+        <div class="chart-container">
+            <iframe src="https://s.tradingview.com/embed-widget/symbol-overview/?symbol=FX%3AEURUSD&colorTheme=dark" style="width:100%; height:100%; border:none;"></iframe>
+        </div>
+
+        <div class="schedule-section">
+            <h3>📅 My Editable Schedule (Guji si aad u bedesho)</h3>
             <table>
-                <thead>
-                    <tr><th>Time</th><th>Activity</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>08:00 - 10:00</td><td>Forex Market Analysis</td></tr>
-                    <tr><td>14:00 - 16:00</td><td>Coding (HTML/CSS & AI)</td></tr>
-                    <tr><td>20:00 - 21:00</td><td>English Vocabulary</td></tr>
-                </tbody>
+                <tr><th>Time</th><th>Activity</th></tr>
+                <tr><td contenteditable="true">08:00 - 10:00</td><td contenteditable="true">Forex Market Analysis</td></tr>
+                <tr><td contenteditable="true">14:00 - 16:00</td><td contenteditable="true">AI Engineering Study</td></tr>
             </table>
         </div>
 
+        <div style="margin-top: 30px;">
+            <a href="https://wa.me/252XXXXXXX" class="social-btn wa">Chat on WhatsApp</a>
+            <a href="mailto:yourname@gmail.com" class="social-btn email">Send Email</a>
+        </div>
+
         <div class="ai-chat">
-            <p>Welcome, Boss! I am monitoring your progress. Your current study streak is 2 days. How can I assist with your code today?</p>
+            <div id="chat-output">AI: Maanta suuqu waa sidee, Boss?</div>
+            <input type="text" id="user-msg" placeholder="Weydii AI-ga...">
+            <button onclick="askAI()">Send</button>
         </div>
     </div>
+
+    <script>
+        // Saacadda
+        function updateClock() {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+
+        // AI Chat Function
+        function askAI() {
+            let msg = document.getElementById('user-msg').value;
+            let output = document.getElementById('chat-output');
+            if(msg) {
+                output.innerHTML += <div><b>You:</b> ${msg}</div>;
+                output.innerHTML += <div><b>AI:</b> Maasha'Allah, fariintaada waa la helay. Waan kugu caawin doonaa!</div>;
+                document.getElementById('user-msg').value = "";
+            }
+        }
+    </script>
 </body>
 </html>
 ✦✦✦✦✦✦✦✦✦✦✦

@@ -1,61 +1,70 @@
+<button onclick="askAI()" style="background: var(--primary); border: none; padding: 10px 20px; cursor: pointer; font-weight: bold;">SEND</button>
+        </div>
+    </div>
+
+    <div class="calc-box">
+        <input type="text" id="calc-screen" disabled>
+        <div class="calc-grid">
+            <button onclick="c('7')">7</button><button onclick="c('8')">8</button><button onclick="c('9')">9</button><button onclick="c('/')">/</button>
+            <button onclick="c('4')">4</button><button onclick="c('5')">5</button><button onclick="c('6')">6</button><button onclick="c('*')">*</button>
+            <button onclick="c('1')">1</button><button onclick="c('2')">2</button><button onclick="c('3')">3</button><button onclick="c('-')">-</button>
+            <button onclick="c('0')">0</button><button onclick="c('.')">.</button><button onclick="e()" style="background: var(--success);">=</button><button onclick="c('+')">+</button>
+            <button onclick="clr()" style="grid-column: span 4; background: #ea4335;">CLEAR</button>
+        </div>
+    </div>
+
+    <div id="schedule">
+        <h2 style="color: var(--primary); margin-top: 40px;">📅 My Routine</h2>
+        <table>
+            <thead><tr><th>Time</th><th>Activity</th></tr></thead>
+            <tbody>
+                <tr contenteditable="true"><td>08:00 - 10:00</td><td>Forex Market Analysis</td></tr>
+                <tr contenteditable="true"><td>14:00 - 16:00</td><td>AI Engineering & English</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 40px;">
+        <a href="https://wa.me/252636668148" class="wa-btn">WhatsApp Me</a>
+        <p>Email: abdiwaduudbaashe@gmail.com</p>
+    </div>
+</div>
+
 <script>
-    // 1. Saacadaha (Clocks)
     function updateClocks() {
         const fmt = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-        try {
-            document.getElementById('local-clock').innerText = new Date().toLocaleTimeString('en-GB', fmt);
-            document.getElementById('london-clock').innerText = new Date().toLocaleTimeString('en-GB', { ...fmt, timeZone: 'Europe/London' });
-            document.getElementById('ny-clock').innerText = new Date().toLocaleTimeString('en-GB', { ...fmt, timeZone: 'America/New_York' });
-            document.getElementById('tokyo-clock').innerText = new Date().toLocaleTimeString('en-GB', { ...fmt, timeZone: 'Asia/Tokyo' });
-        } catch(e) { console.log("Saacadaha cilad baa ka jirta"); }
+        document.getElementById('local-clock').innerText = new Date().toLocaleTimeString('en-GB', fmt);
+        document.getElementById('london-clock').innerText = new Date().toLocaleTimeString('en-GB', { ...fmt, timeZone: 'Europe/London' });
+        document.getElementById('ny-clock').innerText = new Date().toLocaleTimeString('en-GB', { ...fmt, timeZone: 'America/New_York' });
+        document.getElementById('tokyo-clock').innerText = new Date().toLocaleTimeString('en-GB', { ...fmt, timeZone: 'Asia/Tokyo' });
     }
     setInterval(updateClocks, 1000);
 
-    // 2. Calculatorka (Xisaabiyaha) - Halkan ayaa la saxay
-    function c(v) { 
-        document.getElementById('calc-screen').value += v; 
-    }
-    function clr() { 
-        document.getElementById('calc-screen').value = ''; 
-    }
+    function c(v) { document.getElementById('calc-screen').value += v; }
+    function clr() { document.getElementById('calc-screen').value = ''; }
     function e() { 
-        try { 
-            let result = eval(document.getElementById('calc-screen').value);
-            document.getElementById('calc-screen').value = result;
-        } catch (err) { 
-            alert('Xisaabtaada hubi!'); 
-            clr();
-        } 
+        try { document.getElementById('calc-screen').value = eval(document.getElementById('calc-screen').value); } 
+        catch { alert('Hubi xisaabta!'); clr(); } 
     }
 
-    // 3. AI Gemini-Style (Sheekaysiga) - Halkan ayaa la saxay
     function askAI() {
         let input = document.getElementById('user-msg');
         let box = document.getElementById('chat-output');
-        
         if(input.value.trim() !== "") {
-            // Qoraalkaaga
-            box.innerHTML += <div style="color: #58a6ff; margin-bottom: 5px;"><b>Abdiwaduud:</b> ${input.value}</div>;
-            
-            let query = input.value.toLowerCase();
-            input.value = ''; // Nadiifi meesha wax lagu qoro
-
-            // AI Response (Sida Gemini)
+            box.innerHTML += <div style="color: var(--primary); margin-top:10px;"><b>You:</b> ${input.value}</div>;
+            let q = input.value.toLowerCase();
+            input.value = '';
             setTimeout(() => {
-                let response = "Maasha'Allah, waan helay fariintaada Boss. Maxaan maanta kaaga caawiyaa dhanka Trading-ka?";
-                
-                if(query.includes("news")) {
-                    response = "NEWS: Suuqa Forex maanta wuxuu u muuqdaa mid degan, laakiin iska ilaali galabta markii suuqa New York uu furmo!";
-                } else if(query.includes("trading") || query.includes("forex")) {
-                    response = "TRADING: Xusuusnow saaxiib, 5k Challenge-ka wuxuu u baahan yahay Risk Management adag. Ha degdegin!";
-                } else if(query.includes("magacaa")) {
-                    response = "Magacaygu waa Abdiwaduud AI, waxaan ahay kaaliyahaaga rasmiga ah.";
-                }
-
-                box.innerHTML += <div style="color: #d1d5db; margin-bottom: 15px; border-left: 2px solid #238636; padding-left: 10px;"><b>AI:</b> ${response}</div>;
-                box.scrollTop = box.scrollHeight; // Hoos u qaad chat-ka
-            }, 500);
+                let res = "Maasha'Allah Boss, fariintaada waa la helay.";
+                if(q.includes("news")) res = "NEWS: Suuqu hadda wuxuu sugayaa xogta dhaqaalaha, iska ilaali New York Open!";
+                if(q.includes("trading")) res = "TRADING: Risk Management-ka ha iloobin, 1% per trade waa muhiim!";
+                box.innerHTML += <div style="color: #d1d5db; margin-top:5px; border-left: 2px solid var(--success); padding-left:10px;"><b>AI:</b> ${res}</div>;
+                box.scrollTop = box.scrollHeight;
+            }, 600);
         }
     }
 </script>
+</body>
+</html>
+✦✦✦✦✦✦✦✦✦✦✦
 
